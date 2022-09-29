@@ -1,0 +1,29 @@
+
+<!-- saved from url=(0097)https://trailblazer.me/servlet/servlet.loginwidgetcontroller?type=javascript_xauth&brand=www_auth -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script>/*
+    Copyright 2010 Meebo Inc.
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+        http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+*/
+
+/**
+    History
+    2010-04-27
+    Overcommenting
+    -jianshen
+    2010-04-16
+    Added in checks for disabled and blocked tokens
+    -jianshen
+
+    2010-03-26
+    First version of xauth server code
+    -Jian Shen, Meebo
+**/
+!function(){var e=window;if(e.top!==e&&e.postMessage&&function(e){try{var t=window[e],i="__storage_test__";return t.setItem(i,i),t.removeItem(i),!0}catch(e){return e instanceof DOMException&&(22===e.code||1014===e.code||"QuotaExceededError"===e.name||"NS_ERROR_DOM_QUOTA_REACHED"===e.name)&&0!==t.length}}("localStorage")&&e.JSON){var t=e.localStorage,i=null,n=document.cookie.match(/(?:^|;)\s*widgetSession=(\d+)(?:;|$)/);if(n&&n.length&&(i=n[1]),!i){i=(new Date).getTime().toString();var r=navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./),o=r?parseInt(r[2],10):0,a=navigator.userAgent.match(/Firefox\/([0-9]+)\./),s=a?parseInt(a[1]):0,d=o>=77||s>=70;document.cookie="widgetSession="+i+(d?"; secure; samesite=None;":"; ")}var c={"sfdcxauth::extend":function(e,n){if(g("entering xauth extend function"),!function(e,t){if(!e.uid||!p(e.uid,"005")||e.uid.length<15)return v(e,"No uid",t),!1;if(!e.oid||!p(e.oid,"00D")||e.oid.length<15)return v(e,"No oid",t),!1;if(!e.identity)return v(e,"No identity",t),!1;if(!e.identity.instance)return v(e,"No instance URL",t),!1;var i=e.identity.instance;if(!(i&&i.length>6))return v(e,"Short instance URL",t),!1;var n=i.substring(0,6);if("http:/"!==n&&"https:"!==n)return v(e,"Bad instance URL",t),!1;if(!e.identityServiceResponse)return v(e,"Invalid identityServiceResponse",t),!1;if("number"!=typeof e.expire||Math.floor(e.expire)!==e.expire)return v(e,"Invalid Expiration",t),!1;if(!e.allowedDomains||!e.allowedDomains.length)return v(e,"No allowedDomains List Specified",t),!1;return!0}(n,e))return null;n.uid=n.uid.substring(0,15),n.oid=n.oid.substring(0,15);var r=n.oid+n.uid,o=t.getItem(r),a=o?JSON.parse(o):{identity:n.identity,expire:n.expire,active:n.active,lastused:(new Date).getTime(),mydomain:n.mydomain,community:n.community,activeonly:n.activeonly,retainhint:n.retainhint,allowedDomains:n.allowedDomains,identityServiceResponse:n.identityServiceResponse};return o&&(a.allowedDomains=n.allowedDomains,a.identityServiceResponse=n.identityServiceResponse),!0===n.widgetSession&&(a.widgetSession=i),t.setItem(r,JSON.stringify(a)),{cmd:n.cmd,id:n.id}},"sfdcxauth::retrieve":function(e,t){g("entering xauth retrieve function");var i=l(t,e);return!1===(1===Object.keys(i).length)&&(i={}),u(i),{cmd:t.cmd,id:t.id,identityServiceResponses:i}},"sfdcxauth::alive":function(e,t){m(t.id,"entering xauth alive function");var i=l(t,e),n=1===Object.keys(i).length;return u(i),{cmd:t.cmd,id:t.id,alive:n}},"sfdcxauth::expire":function(e,i){return g("entering xauth expire function"),t.removeItem(i.storageKey),{cmd:i.cmd,id:i.id}}};e.addEventListener?e.addEventListener("message",h,!1):e.attachEvent&&e.attachEvent("onmessage",h),e.parent.postMessage(JSON.stringify({cmd:"sfdcxauth::ready"}),"*")}function u(e){if(!(Object.keys(e).length<=1))for(var i in e)t.removeItem(i)}function l(e,i){var n={};if(e.retrieve&&e.retrieve.length)for(var r=0;r<e.retrieve.length;r+=1){var o=e.retrieve[r],a=t.getItem(o);f(o,a?JSON.parse(a):null,i,n)}else for(var s=t.length-1;s>=0;s-=1){var d=t.key(s);if("00D"===d.substring(0,3)&&"005"===d.substring(15,18)){var c=t.getItem(d);f(d,c?JSON.parse(c):null,i,n)}}return n}function f(e,n,r,o){if(n&&!n.block&&(function(e,t){if(!e.allowedDomains)return!1;for(var i=0;i<e.allowedDomains.length;i+=1){var n=e.allowedDomains[i];if(n===t)return!0;if(0===n.indexOf("*.")){var r=n.substring(2,n.length);if(a=r,-1!==(o=t).indexOf(a,o.length-a.length))return!0}}var o,a;return!1}(n,r)&&n.identityServiceResponse)){if(function(e,n){if(n.widgetSession&&n.widgetSession!==i)return t.removeItem(e),!0;return!1}(e,n))return;o[e]={identityServiceResponse:n.identityServiceResponse}}}function g(t){e.console&&e.console.log&&e.console.log(t)}function m(e,t){e&&e%100==0&&g(t)}function v(t,i,n){t&&"number"==typeof t.id&&e.console&&e.console.log&&e.console.log(t.cmd+" Error: "+i)}function p(e,t,i){return String.prototype.startsWith?e.startsWith(t):(i=i||0,e.indexOf(t,i)===i)}function h(i){var n;if("string"==typeof i.data&&(n=JSON.parse(i.data)),n&&n.cmd&&"string"==typeof n.cmd){var r,o,a=i.origin.split("://")[1].split("/")[0];if(n&&"object"==typeof n&&n.cmd&&void 0!==n.id&&"1"!==t.getItem("disabled.xauth.org"))"sfdcxauth::alive"===n.cmd&&m(n.id,i.data),c[n.cmd]&&(r=c[n.cmd](a,n),o=i.origin,r&&"number"==typeof r.id&&e.parent.postMessage(JSON.stringify(r),o))}}}();</script></head><body></body></html>
